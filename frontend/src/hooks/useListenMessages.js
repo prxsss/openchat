@@ -12,7 +12,7 @@ const useListenMessages = () => {
 
   useEffect(() => {
     socket?.on('newMessage', async (newMessage) => {
-      if (selectedChat?._id === newMessage.receiverId) {
+      if (selectedChat?._id === newMessage.senderId) {
         setMessages([...messages, newMessage]);
       }
 
