@@ -12,12 +12,19 @@ const useListenMessages = () => {
 
   useEffect(() => {
     socket?.on('newMessage', async (newMessage) => {
+      console.log('before if', newMessage);
+
       if (selectedChat?._id === newMessage.senderId) {
+        console.log('inside if', newMessage);
         setMessages([...messages, newMessage]);
       }
 
+      console.log('after if', newMessage);
+
       const response = await axios.get('/api/chats');
       setChats(response.data);
+
+      console.log('after setChats', newMessage);
     });
   }, [messages, selectedChat?._id, setChats, setMessages, socket]);
 };

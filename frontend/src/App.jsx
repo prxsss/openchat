@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from 'react-router';
 import { useAuthContext } from './context/AuthContext';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import useListenMessages from './hooks/useListenMessages';
 
 import ChatLayout from './layouts/ChatLayout';
 import NoChatSelectedPage from './pages/NoChatSelectedPage';
@@ -18,6 +19,8 @@ import ProfileLayout from './layouts/ProfileLayout';
 const App = () => {
   const { authUser } = useAuthContext();
   // const authUser = useAuthStore((state) => state.authUser);
+
+  useListenMessages();
 
   return (
     <>

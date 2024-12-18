@@ -2,7 +2,6 @@ import { useEffect, useRef } from 'react';
 import { Link, useParams } from 'react-router';
 import { useChatStore } from '../stores/chat';
 import useGetMessages from '../hooks/useGetMessages';
-import useListenMessages from '../hooks/useListenMessages';
 import { useSocketContext } from '../context/SocketContext';
 
 import { HiChevronLeft, HiPhone, HiVideoCamera } from 'react-icons/hi2';
@@ -19,8 +18,6 @@ const ChatRoomPage = () => {
   const lastMessageRef = useRef(null);
 
   const isOnline = onlineUsers.includes(selectedChat?._id);
-
-  useListenMessages();
 
   useEffect(() => {
     const fetchFriend = async () => {
