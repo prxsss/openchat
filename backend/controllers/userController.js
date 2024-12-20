@@ -1,22 +1,22 @@
 import User from '../models/user.model.js';
 
-export const getUsers = async (req, res) => {
-  try {
-    const users = await User.find({
-      _id: { $nin: [req.user._id, ...req.user.friends] },
-    })
-      .select('firstName lastName profilePicture friends')
-      .populate({
-        path: 'friends',
-        select: 'firstName lastName profilePicture',
-      });
+// export const getUsers = async (req, res) => {
+//   try {
+//     const users = await User.find({
+//       _id: { $nin: [req.user._id, ...req.user.friends] },
+//     })
+//       .select('firstName lastName profilePicture friends')
+//       .populate({
+//         path: 'friends',
+//         select: 'firstName lastName profilePicture',
+//       });
 
-    res.status(200).json({ users });
-  } catch (error) {
-    console.log('Error in getUsers controller', error);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-};
+//     res.status(200).json({ users });
+//   } catch (error) {
+//     console.log('Error in getUsers controller', error);
+//     res.status(500).json({ error: 'Internal server error' });
+//   }
+// };
 
 export const searchUserByFullName = async (req, res) => {
   try {

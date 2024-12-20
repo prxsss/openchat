@@ -2,16 +2,51 @@ import Chat from '../models/chat.model.js';
 import User from '../models/user.model.js';
 import Message from '../models/message.model.js';
 
-export const getUserChats = async (req, res) => {
+// export const getUserChats = async (req, res) => {
+//   try {
+//     const loggedInUserId = req.user._id;
+
+//     const chats = await Chat.find({ participants: loggedInUserId })
+//       .select('-messages')
+//       .populate({
+//         path: 'participants',
+//         match: { _id: { $ne: loggedInUserId } },
+//         select: 'firstName lastName fullName profilePicture',
+//       })
+//       .populate({
+//         path: 'lastMessage',
+//         select: 'message senderId createdAt',
+//         populate: {
+//           path: 'senderId',
+//           select: 'firstName lastName profilePicture',
+//         },
+//       })
+//       .sort({ updatedAt: -1 })
+//       .exec();
+
+//     const filterChats = chats.filter((chat) =>
+//       req.user.friends.includes(chat.participants[0]._id)
+//     );
+
+//     res.status(200).json(filterChats);
+//   } catch (error) {
+//     console.log('Error in getUserChats controller', error);
+//     res.status(500).json({ error: 'Internal server error' });
+//   }
+// };
+
+export const searchChatsByUserFullName = async (req, res) => {
   try {
     const loggedInUserId = req.user._id;
+    const fullName = req.query.fullName;
+    const regex = new RegExp(fullName, 'i');
 
     const chats = await Chat.find({ participants: loggedInUserId })
       .select('-messages')
       .populate({
         path: 'participants',
-        match: { _id: { $ne: loggedInUserId } },
-        select: 'firstName lastName profilePicture',
+        match: { _id: { $ne: loggedInUserId }, fullName: { $regex: regex } },
+        select: 'firstName lastName fullName profilePicture',
       })
       .populate({
         path: 'lastMessage',
@@ -25,7 +60,7 @@ export const getUserChats = async (req, res) => {
       .exec();
 
     const filterChats = chats.filter((chat) =>
-      req.user.friends.includes(chat.participants[0]._id)
+      req.user.friends.includes(chat.participants[0]?._id)
     );
 
     res.status(200).json(filterChats);

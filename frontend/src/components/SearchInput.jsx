@@ -1,8 +1,21 @@
+import useGetChats from '../hooks/useGetChats';
+
 const SearchInput = () => {
+  const { fetchChats } = useGetChats();
+
+  const handleSearch = async (e) => {
+    await fetchChats(e.target.value);
+  };
+
   return (
     <div className="px-4 pt-2">
       <label className="input input-bordered mb-4 flex items-center gap-2 rounded-full">
-        <input type="text" className="grow" placeholder="Search" disabled />
+        <input
+          onChange={handleSearch}
+          type="text"
+          className="grow"
+          placeholder="Search"
+        />
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 16 16"

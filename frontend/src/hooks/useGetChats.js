@@ -7,24 +7,24 @@ const useGetChats = () => {
   const setChats = useChatStore((state) => state.setChats);
   const [loading, setLoading] = useState(false);
 
+  const fetchChats = async (fullName = '') => {
+    try {
+      setLoading(true);
+
+      const response = await axios.get(`/api/chats?fullName=${fullName}`);
+
+      setChats(response.data);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchChats = async () => {
-      try {
-        setLoading(true);
-
-        const response = await axios.get('/api/chats');
-
-        setChats(response.data);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchChats();
-  }, [setChats]);
+  }, []);
 
-  return { chats, loading };
+  return { chats, fetchChats, loading };
 };
 export default useGetChats;
